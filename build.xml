@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<project name="my first project" default="deploy" >
+<property file="build.properties" />
+<target name="simple" depends="make" >
+<echo> This is my first ant project</echo>
+</target>
+<target name="clean">
+<delete dir="${classdir}" />
+</target>
+<target name="make" >
+<mkdir dir="${classdir}" />
+<mkdir dir="${desstpath}" />
+</target>
+<target name="compile" description="it will compile the source code" depends="clean,make,mytarget" >
+<javac destdir="${classdir}" srcdir="." includeantruntime="true"/>
+</target>
+<target name="package" description="it will compile the pack the source file" depends="compile" >
+<jar basedir="${classdir}" jarfile="${desstpath}/${jarname}.jar" />
+</target>
+<target name="deploy" depends="package" >
+<copy todir="classes" > 
+    <fileset dir="dest">
+	<exclude name="**/*.war"/>
+	</fileset>
+	</copy>
+</target>
+<target name="mytarget" >
+<echo> before ant call </echo>
+<antcall target ="mytarget2" >
+</antcall>
+<echo> after ant call </echo>
+</target>
+<target name="mytarget2" >
+<echo> This is target2 </echo>
+</target>
+</project>
